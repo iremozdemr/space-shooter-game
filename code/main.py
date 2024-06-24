@@ -31,6 +31,7 @@ while running:
             running = False
 
     #draw the game
+    display_surface.fill("pink")
     pygame.display.update()
     
 pygame.quit()
