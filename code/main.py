@@ -29,8 +29,20 @@
 #image'da hiç transparent pixel yoksa convert kullan
 #image'da transparent pixel vars convert_alpha kullan
 
+#rectangle oluşturma:
+
+#1-en baştan oluşturabilirsin:
+#pygame.Rect(pos,size)
+#pygame.FRect(pos,size)
+
+#2-surface kullanarak oluşturabilirsin:
+#surface size = rectangle size
+#pygame.get_rect(point = pos)
+#pygame.get_frect(point = pos)
+
 import pygame 
 import random
+import math
 
 pygame.init()
 
@@ -41,8 +53,16 @@ display_surface = pygame.display.set_mode((1280,720))
 player_surface = pygame.image.load("images/player.png").convert_alpha()
 star_surface = pygame.image.load("images/star.png").convert_alpha()
 
-player_x = 100
-player_y = 100
+player_rectangle = player_surface.get_rect(center = (60,60))
+num = player_rectangle.left
+
+star_positions = []*20
+
+for i in range(20):
+    star_x = random.randint(0,1280)
+    star_y = random.randint(0,720)
+
+    star_positions.append((star_x,star_y))
 
 while running:
 
@@ -50,17 +70,16 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    display_surface.fill(pygame.Color("orchid1"))
-
-    player_x = player_x + 0.1
-
-    display_surface.blit(player_surface,(player_x,player_y))
-    #ekranın üstüne başka bir ekran eklemek için kullanılır
+    display_surface.fill(pygame.Color("darkgray"))
 
     for i in range(20):
-        star_x = random.randint(0,1280)
-        star_y = random.randint(0,720)
-        display_surface.blit(star_surface,(star_x,star_y))
+        display_surface.blit(star_surface,star_positions[i])
+
+    num += 0.1
+    player_rectangle.left = math.floor(num)
+
+    display_surface.blit(player_surface,player_rectangle)
+    #ekranın üstüne başka bir ekran eklemek için kullanılır
 
     pygame.display.update()
     
