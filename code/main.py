@@ -40,6 +40,9 @@
 #pygame.get_rect(point = pos)
 #pygame.get_frect(point = pos)
 
+#blit():
+#ekranın üstüne başka bir ekran eklemek için kullanılır
+
 import pygame 
 import random
 import math
@@ -50,11 +53,15 @@ pygame.display.set_caption("space shooter")
 running = True
 
 display_surface = pygame.display.set_mode((1280,720))
-player_surface = pygame.image.load("images/player.png").convert_alpha()
 star_surface = pygame.image.load("images/star.png").convert_alpha()
+player_surface = pygame.image.load("images/player.png").convert_alpha()
+meteor_surface = pygame.image.load("images/meteor.png").convert_alpha()
+laser_surface = pygame.image.load("images/laser.png").convert_alpha()
 
 player_rectangle = player_surface.get_rect(center = (60,60))
 num = player_rectangle.left
+meteor_rectangle = meteor_surface.get_rect(center = (640,360))
+laser_rectangle = laser_surface.get_rect(bottomleft = (20,700))
 
 star_positions = []*20
 
@@ -79,7 +86,8 @@ while running:
     player_rectangle.left = math.floor(num)
 
     display_surface.blit(player_surface,player_rectangle)
-    #ekranın üstüne başka bir ekran eklemek için kullanılır
+    display_surface.blit(meteor_surface,meteor_rectangle)
+    display_surface.blit(laser_surface,laser_rectangle)
 
     pygame.display.update()
     
