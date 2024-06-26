@@ -60,6 +60,7 @@ laser_surface = pygame.image.load("images/laser.png").convert_alpha()
 
 player_rectangle = player_surface.get_rect(center = (60,60))
 num = player_rectangle.left
+direction = 1
 meteor_rectangle = meteor_surface.get_rect(center = (640,360))
 laser_rectangle = laser_surface.get_rect(bottomleft = (20,700))
 
@@ -82,8 +83,11 @@ while running:
     for i in range(20):
         display_surface.blit(star_surface,star_positions[i])
 
-    num += 0.1
+    num += (0.1 * direction)
     player_rectangle.left = math.floor(num)
+
+    if player_rectangle.right > 1280 or player_rectangle.left < 0:
+        direction = direction * -1
 
     display_surface.blit(player_surface,player_rectangle)
     display_surface.blit(meteor_surface,meteor_rectangle)
