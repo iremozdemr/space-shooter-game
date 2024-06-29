@@ -45,26 +45,15 @@
 
 import pygame 
 import random
-import math
 
 pygame.init()
-
 pygame.display.set_caption("space shooter")
 running = True
 clock = pygame.time.Clock()
 
 display_surface = pygame.display.set_mode((1280,720))
+
 star_surface = pygame.image.load("images/star.png").convert_alpha()
-player_surface = pygame.image.load("images/player.png").convert_alpha()
-meteor_surface = pygame.image.load("images/meteor.png").convert_alpha()
-laser_surface = pygame.image.load("images/laser.png").convert_alpha()
-
-player_rectangle = player_surface.get_rect(center = (60,60))
-num = player_rectangle.left
-direction = 1
-meteor_rectangle = meteor_surface.get_rect(center = (640,360))
-laser_rectangle = laser_surface.get_rect(bottomleft = (20,700))
-
 star_positions = []*20
 
 for i in range(20):
@@ -73,8 +62,19 @@ for i in range(20):
 
     star_positions.append((star_x,star_y))
 
+meteor_surface = pygame.image.load("images/meteor.png").convert_alpha()
+meteor_rectangle = meteor_surface.get_rect(center = (640,360))
+
+laser_surface = pygame.image.load("images/laser.png").convert_alpha()
+laser_rectangle = laser_surface.get_rect(bottomleft = (20,700))
+
+player_surface = pygame.image.load("images/player.png").convert_alpha()
+player_rectangle = player_surface.get_rect(center = (640,360))
+player_direction = pygame.math.Vector2(20,-10)
+player_speed = 2
+
 while running:
-    clock.tick(60)
+    dt = clock.tick(10) / 1000
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -85,15 +85,13 @@ while running:
     for i in range(20):
         display_surface.blit(star_surface,star_positions[i])
 
-    num += (1 * direction)
-    player_rectangle.left = math.floor(num)
-
-    if player_rectangle.right > 1280 or player_rectangle.left < 0:
-        direction = direction * -1
-
-    display_surface.blit(player_surface,player_rectangle)
     display_surface.blit(meteor_surface,meteor_rectangle)
+
     display_surface.blit(laser_surface,laser_rectangle)
+
+    player_rectangle.center += player_direction * player_speed * dt
+    #rectangle.center += direction * speed * dt
+    display_surface.blit(player_surface,player_rectangle)
 
     pygame.display.update()
     
