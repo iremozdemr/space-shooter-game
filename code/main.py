@@ -70,31 +70,35 @@ laser_rectangle = laser_surface.get_rect(bottomleft = (20,700))
 
 player_surface = pygame.image.load("images/player.png").convert_alpha()
 player_rectangle = player_surface.get_rect(center = (640,360))
-player_direction = pygame.math.Vector2(10,-20)
-player_speed = 10
+player_direction = pygame.math.Vector2(0,0)
+player_speed = 300
 
 while running:
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(100) / 1000
+
+    display_surface.fill(pygame.Color("darkgray"))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    display_surface.fill(pygame.Color("darkgray"))
-
     for i in range(20):
         display_surface.blit(star_surface,star_positions[i])
 
-    display_surface.blit(meteor_surface,meteor_rectangle)
-
-    display_surface.blit(laser_surface,laser_rectangle)
-
-    if player_rectangle.right >= 1280 or player_rectangle.left <= 0:
+    keys = pygame.key.get_pressed()
+    player_direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
+    player_direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+    
+    if player_rectangle.left <= 0 or player_rectangle.right >= 1280:
         player_direction.x *= -1
-    if player_rectangle.bottom >= 720 or player_rectangle.top <= 0:
-        player_direction.y *= -1
 
+    if player_rectangle.top <= 0 or player_rectangle.bottom >= 720:
+        player_direction.y *= -1
+    
     player_rectangle.center += player_direction * player_speed * dt
+
+    display_surface.blit(meteor_surface,meteor_rectangle)
+    display_surface.blit(laser_surface,laser_rectangle)
     display_surface.blit(player_surface,player_rectangle)
 
     pygame.display.update()
