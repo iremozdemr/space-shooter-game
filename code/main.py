@@ -51,6 +51,7 @@ pygame.init()
 
 pygame.display.set_caption("space shooter")
 running = True
+clock = pygame.time.Clock()
 
 display_surface = pygame.display.set_mode((1280,720))
 star_surface = pygame.image.load("images/star.png").convert_alpha()
@@ -73,6 +74,7 @@ for i in range(20):
     star_positions.append((star_x,star_y))
 
 while running:
+    clock.tick(60)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -83,7 +85,7 @@ while running:
     for i in range(20):
         display_surface.blit(star_surface,star_positions[i])
 
-    num += (0.1 * direction)
+    num += (1 * direction)
     player_rectangle.left = math.floor(num)
 
     if player_rectangle.right > 1280 or player_rectangle.left < 0:
