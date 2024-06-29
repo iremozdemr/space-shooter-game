@@ -70,11 +70,11 @@ laser_rectangle = laser_surface.get_rect(bottomleft = (20,700))
 
 player_surface = pygame.image.load("images/player.png").convert_alpha()
 player_rectangle = player_surface.get_rect(center = (640,360))
-player_direction = pygame.math.Vector2(20,-10)
-player_speed = 2
+player_direction = pygame.math.Vector2(10,-20)
+player_speed = 10
 
 while running:
-    dt = clock.tick(10) / 1000
+    dt = clock.tick(60) / 1000
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -89,8 +89,12 @@ while running:
 
     display_surface.blit(laser_surface,laser_rectangle)
 
+    if player_rectangle.right >= 1280 or player_rectangle.left <= 0:
+        player_direction.x *= -1
+    if player_rectangle.bottom >= 720 or player_rectangle.top <= 0:
+        player_direction.y *= -1
+
     player_rectangle.center += player_direction * player_speed * dt
-    #rectangle.center += direction * speed * dt
     display_surface.blit(player_surface,player_rectangle)
 
     pygame.display.update()
